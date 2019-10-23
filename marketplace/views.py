@@ -10,6 +10,7 @@ import re
 from flask_table import Table, Col
 from flask import Flask, render_template
 from flask_bootstrap import *
+from .forms import LandingForm
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -17,4 +18,9 @@ app = Blueprint("app", __name__)
 
 @app.route('/', methods=["GET", "POST"])
 def index():
-    return render_template("index.html")
+    form_land = LandingForm()
+    if request.args.get("landing_search") != None:
+        print("Form has validated")
+
+
+    return render_template("index.html", form = form_land)

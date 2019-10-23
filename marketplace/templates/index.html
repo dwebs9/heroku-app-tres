@@ -1,26 +1,23 @@
 {% extends "base.html" %} {% import "bootstrap/wtf.html" as wtf %} {% block content %}
 
 
-
 <!-- Jumbotron Search Start -->
 <section class="jumbotron jumbotron-fluid hero-image">
 
-    <h1 class="bg-base-blue col-4 text-white">Find The Perfect Booty</h1>
+    <h1 class="bg-base-blue col-4 text-white">Find The Perfect Tool</h1>
     <div class="container">
         <form class="inline-form col-sm-10">
             <div class="input-group-lg col-sm-10">
-                <div class="aaa">
-
-                </div>
-
-                <div class="bbb">
-
-                </div>
-
+                {{wtf.form_field(form.landing_search, placeholder="I'm looking for...", type="text", class="form-control")}}
+            </div>
+            <div class="input-group-append">
+                {{wtf.form_field(form.landing_search_button, class="form-control btn btn-success", )}}
             </div>
 
+    </div>
 
-        </form>
+
+    </form>
     </div>
 </section>
 <!-- Jumbotron Search ./ End -->
@@ -38,17 +35,17 @@
         </div>
         <div class="container">
             <div class="card-deck my-4">
-                <!-- {% for tool in tools %} -->
+
 
                 <div class="card border-dark">
                     <div class="card-header bg-base-blue text-white border-dark">
-                        <!-- <h5 class="card-title">{{tool.tool_name}}</h5> -->
+                        <h5 class="card-title"></h5>
                     </div>
 
                     <div class="card-body">
-                        <img class="card-img-top mx-auto" src={{ '../static/img/' + tool.images }} alt="Tool Image">
+                        <img class="card-img-top mx-auto" src='' alt="Tool Image">
 
-                        <!-- <p class="card-text d-inline-block text-truncate pt-3" style="max-width: 200px;">{{tool.desc}} -->
+                        <p class="card-text d-inline-block text-truncate pt-3" style="max-width: 200px;">
                         </p>
 
                     </div>
@@ -57,8 +54,8 @@
                         <div class="card-footer bg-base-blue text-white border-dark">
                             <h5> Starting Price </h5>
 
-                            <!-- <h5 class="font-face"> ${{tool.list_price}}</h5>
-                            <hr> -->
+                            <h5 class="font-face"></h5>
+                            <hr>
                             <a href="" class="btn btn-bg-dp mx-auto btn-inline">Make a Bid
                             </a>
 
@@ -66,7 +63,7 @@
                     </div>
 
                 </div>
-                <!-- {% endfor %} -->
+
 
 
             </div>
@@ -95,19 +92,15 @@
 
             <article class="col-sm-6 " id="sell ">
 
-                <img class="mx-auto mt-3 " src=" " alt="Sell a Tool " height="200px " />
+                <img class="mx-auto mt-3 " src="" alt="Sell a Tool " height="200px " />
 
 
-                <!-- <h3 class="display-4 "> Sell a Tool</h3>
+                <h3 class="display-4 "> Sell a Tool</h3>
 
-                <p> Are your tools just collecting dust in your garage? Need to make a few bucks? Well its time to pull
-                    them
+                <p> Are your tools just collecting dust in your garage? Need to make a few bucks? Well its time to pull them
                     out, dust them off and list them here</p>
 
-                <a href="/tools/create"><button type="button" onclick="login" class=" btn btn-success mt-4">Sell
-                        your tools
-                        here</button></a> -->
-
+                <button class="btn btn-success ">Sell Your Tools Here</button>
 
             </article>
 
@@ -123,8 +116,5 @@
 <!-- End Main -->
 
 </div>
-
-
-
 
 {% endblock %}
