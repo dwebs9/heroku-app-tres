@@ -10,7 +10,7 @@ import re
 from flask_table import Table, Col
 from flask import Flask, render_template
 from flask_bootstrap import *
-from .forms import LandingForm
+from .forms import LandingForm, SearchForm
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -23,4 +23,18 @@ def index():
         print("Form has validated")
 
 
-    return render_template("index.html", form = form_land)
+    return render_template("index.html", form=form_land)
+
+
+
+@app.route("/results", methods=["GET", "POST"])
+def search():
+
+    search = SearchForm()
+
+    if search.validate_on_submit():
+        print("The eagle has landed AKA the form has submitted")
+
+
+
+    return render_template("results.html", form=search)
