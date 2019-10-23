@@ -14,9 +14,9 @@ from .forms import LandingForm, SearchForm
 from flask_sqlalchemy import SQLAlchemy
 
 
-app = Blueprint("app", __name__)
+bp = Blueprint("app", __name__)
 
-@app.route('/', methods=["GET", "POST"])
+@bp.route('/', methods=["GET", "POST"])
 def index():
     form_land = LandingForm()
     if request.args.get("landing_search") != None:
@@ -27,7 +27,7 @@ def index():
 
 
 
-@app.route("/results", methods=["GET", "POST"])
+@bp.route("/results", methods=["GET", "POST"])
 def search():
 
     search = SearchForm()

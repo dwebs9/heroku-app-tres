@@ -45,9 +45,9 @@ class CreateForm(FlaskForm):
         FileAllowed(ALLOWED_FILE, message="Only support jpg, JPG"),
     ],
     )
-    title = StringField("Title", validators=[InputRequired()])
+    tool_name = StringField("Title", validators=[InputRequired()])
     modelNo = StringField("Model Number", validators=[InputRequired()])
-    price = StringField("Price", validators=[InputRequired()])
+    list_price = StringField("Price", validators=[InputRequired()])
     category = SelectField(
         u"Category",
         choices=[
@@ -58,7 +58,7 @@ class CreateForm(FlaskForm):
             ("Other Tools", "Other Tools"),
         ],
     )
-    description = StringField("Description", validators=[InputRequired()])
+    desc = StringField("Description", validators=[InputRequired()])
     brand = StringField("Brand", validators=[InputRequired()])
     submit = SubmitField("Create")
 
