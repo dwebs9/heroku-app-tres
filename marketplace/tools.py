@@ -11,6 +11,20 @@ import os
 
 bp = Blueprint('tool', __name__, url_prefix='/tools')
 
+def check_upload_file(form):
+    # get file data from form
+    fp = form.image.data
+    filename = fp.filename
+    # get the current path of the module file… store file relative to this path
+    BASE_PATH = os.path.dirname(__file__)
+    # upload file location – directory of this file/static/image
+    upload_path = os.path.join(BASE_PATH, "static/img", secure_filename(filename))
+    # store relative path in DB as image location in HTML is relative
+    db_upload_path = "/static/img/" + secure_filename(filename)
+    # save the file and return the db upload path
+    fp.save(upload_path)
+
+    return db_upload_path
 
 
 @bp.route("/create", methods=["GET", "POST"])
