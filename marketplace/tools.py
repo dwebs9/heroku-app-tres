@@ -7,6 +7,7 @@ from flask_login import login_user, login_required, logout_user
 from werkzeug.utils import secure_filename
 from decimal import Decimal, getcontext
 import os
+from . import db
 
 
 bp = Blueprint('tool', __name__, url_prefix='/tools')
