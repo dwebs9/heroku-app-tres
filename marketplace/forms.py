@@ -38,7 +38,7 @@ class RegisterForm(FlaskForm):
 
 class CreateForm(FlaskForm):
     ALLOWED_FILE = {"jpg", "JPG"}
-    image = FileField(
+    images = FileField(
     "Tool Image",
     validators=[
         FileRequired(message="Image can not be empty"),

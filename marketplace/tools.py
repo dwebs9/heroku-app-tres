@@ -36,12 +36,12 @@ def create():
         db_file_path = check_upload_file(form)
         new_tool = Tool(
             images=db_file_path,
-            tool_name=form.title.data,
+            tool_name=form.tool_name.data,
             modelNo=form.modelNo.data,
-            list_price=form.price.data,
+            list_price=form.list_price.data,
             category=form.category.data,
             user_id="default",
-            desc=form.description.data,
+            desc=form.desc.data,
             brand=form.brand.data,
         )
         db.session.add(new_tool)
