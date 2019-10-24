@@ -18,3 +18,19 @@ class Tool(db.Model):
     images = db.Column(db.String(1000), default='noimage.png')
 
     # bid_id = db.relationship('Bid', backref='tools')
+
+
+
+class User(db.Model, UserMixin):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), index=True, nullable=False)
+    lastName = db.Column(db.String(100), index=True, nullable=False)
+    emailid = db.Column(db.String(100), index=True,
+                        unique=True, nullable=False)
+    password_hash = db.Column(db.String(255), nullable=False)
+    bids = db.relationship('Bid', backref='user')
+    tools = db.relationship('Tool', backref='user')
+
+    def __repr__(self):
+        return "<Name: {}, ID: {}, Last Name {}>".format(self.name, self.id, self.lastName)

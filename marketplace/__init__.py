@@ -29,7 +29,6 @@ def create_app():
 
 
 
-
     from . import views
     bootstrap = Bootstrap(app)
     app.register_blueprint(views.bp)
