@@ -12,7 +12,8 @@ from flask import Flask, render_template
 from flask_bootstrap import *
 from .forms import LandingForm, SearchForm
 from flask_sqlalchemy import SQLAlchemy
-
+import sqlalchemy as db
+from . import db
 
 bp = Blueprint("app", __name__)
 
@@ -31,9 +32,25 @@ def index():
 def search():
 
     search = SearchForm()
+    search_results = []
 
     if search.validate_on_submit():
-        print("The eagle has landed AKA the form has submitted")
+        search_string = search.data["search"]
+        print(search_string)
+        if search_string != "":
+            all_tools = Tool.query.all()
+            for tool in all_tools:
+                if re.search(search_string, tool.tool_name):
+                    search_results.append(tool)
+        else:
+            print("This string is empty")
+        print("Below is Search results")
+
+        # display results
+        table = Results(search_results)
+        table.border = True
+        return render_template("results.html", form=search, table=table)
+       
 
 
 
