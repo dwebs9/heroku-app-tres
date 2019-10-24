@@ -10,7 +10,7 @@ class Tool(db.Model):
     modelNo = db.Column(db.String(100))
     list_price = db.Column(db.Float(100))
     category = db.Column(db.String(100))
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer default="non_user")
     desc = db.Column(db.String(100))
     brand = db.Column(db.String(100))
     date_created = db.Column(db.DateTime, default=datetime.now())
