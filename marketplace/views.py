@@ -36,23 +36,18 @@ def search():
     search_results = []
 
     if search.validate_on_submit():
+
         search_string = search.data["search"]
-        print(search_string)
+        # print(search_string)
         if search_string != "":
             all_tools = Tool.query.all()
+            print(all_tools[0].tool_name)
             for tool in all_tools:
-                if re.search(search_string, tool.tool_name):
+                if re.search(search_string, tool.tool_name, re.IGNORECASE):
                     search_results.append(tool)
         else:
             print("This string is empty")
-        print("Below is Search results")
 
-        # display results
-        table = Results(search_results)
-        table.border = True
-        return render_template("results.html", form=search, table=table)
-       
-
-
+        return render_template("results.html", form=search, items=search_results)
 
     return render_template("results.html", form=search)
