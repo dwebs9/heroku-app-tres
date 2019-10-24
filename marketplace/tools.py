@@ -13,7 +13,7 @@ bp = Blueprint('tool', __name__, url_prefix='/tools')
 
 def check_upload_file(form):
     # get file data from form
-    fp = form.image.data
+    fp = form.images.data
     filename = fp.filename
     # get the current path of the module file… store file relative to this path
     BASE_PATH = os.path.dirname(__file__)
