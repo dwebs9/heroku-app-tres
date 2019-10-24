@@ -41,7 +41,7 @@ def create():
             modelNo=form.modelNo.data,
             list_price=form.list_price.data,
             category=form.category.data,
-            user_id="default",
+            user_id=1,
             desc=form.desc.data,
             brand=form.brand.data,
         )
