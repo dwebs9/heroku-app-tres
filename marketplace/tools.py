@@ -2,7 +2,7 @@ import datetime
 from flask import (Blueprint, flash, render_template, session,
                    request, url_for, redirect)
 from .models import Tool
-from .forms import BidForm, MarkSold, UndoSold, CreateForm
+from .forms import CreateForm
 from flask_login import login_user, login_required, logout_user
 from werkzeug.utils import secure_filename
 from decimal import Decimal, getcontext
@@ -14,7 +14,6 @@ bp = Blueprint('tool', __name__, url_prefix='/tools')
 
 
 @bp.route("/create", methods=["GET", "POST"])
-@login_required
 def create():
     form = CreateForm()
     heading = "List an Item"
@@ -27,7 +26,7 @@ def create():
             modelNo=form.modelNo.data,
             list_price=form.price.data,
             category=form.category.data,
-            user_id=session.get("user_id"),
+            user_id="default",
             desc=form.description.data,
             brand=form.brand.data,
         )
