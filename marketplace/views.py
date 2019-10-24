@@ -11,6 +11,7 @@ from flask_table import Table, Col
 from flask import Flask, render_template
 from flask_bootstrap import *
 from .forms import LandingForm, SearchForm
+from .models import Tool
 from flask_sqlalchemy import SQLAlchemy
 import sqlalchemy as db
 from . import db
