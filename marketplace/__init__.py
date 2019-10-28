@@ -27,11 +27,13 @@ def create_app():
     from . import tools
     app.register_blueprint(tools.bp)
 
-
+    from . import auth
+    app.register_blueprint(auth.bp)
 
     from . import views
     bootstrap = Bootstrap(app)
     app.register_blueprint(views.bp)
+    
     app.secret_key = "the80sselfhelpguru"
 
 
