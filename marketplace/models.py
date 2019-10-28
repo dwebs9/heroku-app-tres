@@ -17,7 +17,8 @@ class Tool(db.Model):
     sold_status = db.Column(db.String(100), default="")
     images = db.Column(db.String(1000), default='noimage.png')
 
-    # bid_id = db.relationship('Bid', backref='tools')
+    bid_id = db.relationship('Bid', backref='tools')
+
 
 
 
@@ -34,3 +35,15 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return "<Name: {}, ID: {}, Last Name {}>".format(self.name, self.id, self.lastName)
+
+class Bid(db.Model):
+    __tablename__ = 'bids'
+    id = db.Column(db.Integer, primary_key=True)
+    bid_amount = db.Column(db.Float, nullable=False)
+    bid_date = db.Column(db.DateTime, default=datetime.now())
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    tool_id = db.Column(db.Integer, db.ForeignKey('tools.id'))
+
+    def __repr__(self):
+        return "<bid_amount: {}, id: {}, user_id: {}, tool_id: {}>".format(self.bid_amount, self.id, self.user_id, self.tool_id)
