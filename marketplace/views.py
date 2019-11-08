@@ -34,7 +34,7 @@ def search():
 
     search = SearchForm()
     search_results = []
-
+    print("########## attempt to submit form")
     if search.validate_on_submit():
 
         search_string = search.data["search"]
@@ -44,6 +44,8 @@ def search():
             print(all_tools[0].tool_name)
             for tool in all_tools:
                 if re.search(search_string, tool.tool_name, re.IGNORECASE):
+                    print("########## Underneath this lies the search results")
+                    print(search_results)
                     search_results.append(tool)
         else:
             print("This string is empty")
