@@ -36,7 +36,7 @@ def login():
         viewed = []
         session['vieweditems'] = viewed
         if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('views.index')
+            next_page = url_for('app.index')
             print('#################')
 
         print(next_page)
@@ -50,7 +50,7 @@ def login():
 def logout():
     logout_user()
 
-    return redirect(url_for('views.index'))
+    return redirect(url_for('app.index'))
 
 
 @bp.route('/register', methods=['GET', 'POST'])
