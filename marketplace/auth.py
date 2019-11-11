@@ -48,6 +48,7 @@ def login():
 
 @bp.route('/logout')
 def logout():
+    flash("You have been succesfully logged out", 'alert alert-info')
     logout_user()
 
     return redirect(url_for('app.index'))
@@ -72,7 +73,7 @@ def register():
         if user_exists:
             register_error = "The Email \"{}\" is already registered, please try another email or <a href=\"/login\" class=\"alert-link\">Login here</a>" .format(
                 email)
-            flash((Markup(register_error)), 'alert alert-danger')
+            ((Markup(register_error)), 'alert alert-danger')
             return redirect(url_for('auth.register'))
 
         # create a new db user
