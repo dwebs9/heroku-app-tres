@@ -44,7 +44,7 @@ def show(id):
 @bp.route('/userdash/<userid>', methods=["POST", "GET"])
 @login_required
 def userdash(userid):
-
+    print("Userdash should be displayed right now")
     print(userid)
     # query db for tools current user has listed
     tool = Tool.query.filter_by(user_id=userid).all()
