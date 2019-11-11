@@ -162,7 +162,7 @@ def create():
 
     return render_template("tools/create.html", form=form, heading=heading)
 
-    @bp.route('/<toolid>/bid', methods=['GET', 'POST'])
+@bp.route('/<toolid>/bid', methods=['GET', 'POST'])
 def bid(toolid):
     form = BidForm()
     tool = Tool.query.filter_by(id=toolid).first()
