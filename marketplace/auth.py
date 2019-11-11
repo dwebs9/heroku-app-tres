@@ -48,8 +48,9 @@ def login():
 
 @bp.route('/logout')
 def logout():
-    flash("You have been succesfully logged out", 'alert alert-info')
+   
     logout_user()
+    # flash("You have been succesfully logged out", 'alert alert-info')
 
     return redirect(url_for('app.index'))
 
