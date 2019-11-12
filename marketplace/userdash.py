@@ -18,7 +18,7 @@ bp = Blueprint('userdash', __name__, url_prefix='/userdash')
 def maindash(userid):
 
     # count tools selling
-    tool = Tool.query.filter_by(user_id=userid).filter(Tool.sold_status == 0).all()
+    tool = Tool.query.filter_by(user_id=userid).filter(Tool.sold_status == "0").all()
     tool_length = len(tool)
     # tool_length = session.get('tool_length', None)
 
@@ -27,7 +27,7 @@ def maindash(userid):
     bid_length = len(bids)
 
     # tools sold by user
-    sold = Tool.query.filter_by(user_id=userid).filter(Tool.sold_status != 0).all()
+    sold = Tool.query.filter_by(user_id=userid).filter(Tool.sold_status != "0").all()
     sold_length = len(sold)
 
     # calculate list_price sold total
