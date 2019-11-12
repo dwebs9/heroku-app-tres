@@ -18,19 +18,16 @@ bp = Blueprint('userdash', __name__, url_prefix='/userdash')
 def maindash(userid):
 
     # count tools selling
-    tool = Tool.query.filter_by(user_id=userid).filter(
-        Tool.sold_status == 0).all()
+    tool = Tool.query.filter_by(user_id=userid).filter(Tool.sold_status == 0).all()
     tool_length = len(tool)
     # tool_length = session.get('tool_length', None)
 
     # count bids made by user
-    bids = db.session.query(Tool, Bid).join(
-        Bid).filter_by(user_id=userid).all()
+    bids = db.session.query(Tool, Bid).join(Bid).filter_by(user_id=userid).all()
     bid_length = len(bids)
 
     # tools sold by user
-    sold = Tool.query.filter_by(user_id=userid).filter(
-        Tool.sold_status != 0).all()
+    sold = Tool.query.filter_by(user_id=userid).filter(Tool.sold_status != 0).all()
     sold_length = len(sold)
 
     # calculate list_price sold total
@@ -50,8 +47,7 @@ def maindash(userid):
 def userselling(userid):
 
     # query db for tools current user has listed
-    tool = Tool.query.filter_by(user_id=userid).filter(
-        Tool.sold_status == 0).all()
+    tool = Tool.query.filter_by(user_id=userid).filter(Tool.sold_status == 0).all()
 
     return render_template('userdash/manageselling.html', userid=userid, tool=tool)
 
@@ -60,8 +56,7 @@ def userselling(userid):
 @login_required
 def usersold(userid):
 
-    sold = Tool.query.filter_by(user_id=userid).filter(
-        Tool.sold_status != 0).all()
+    sold = Tool.query.filter_by(user_id=userid).filter(Tool.sold_status != 0).all()
 
     return render_template('userdash/managesold.html', userid=userid, sold=sold)
 
@@ -71,7 +66,6 @@ def usersold(userid):
 def userbids(userid):
 
     # query db for bids current user has made
-    bids = db.session.query(Tool, Bid).join(
-        Bid).filter_by(user_id=userid).all()
+    bids = db.session.query(Tool, Bid).join(Bid).filter_by(user_id=userid).all()
 
     return render_template('userdash/managebids.html', userid=userid, bids=bids)
