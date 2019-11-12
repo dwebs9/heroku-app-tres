@@ -40,7 +40,7 @@ def show(id):
     return render_template('tools/item.html', tool=tool, list_price=list_price, form=bform, bid_user=bid_user, current_bid_amount=current_bid_amount)
 
 
-@bp.route('/userdash/main/<userid>', methods=["POST", "GET"])
+@bp.route('/userdash/<userid>', methods=["POST", "GET"])
 @login_required
 def userdash(userid):
     print("Userdash should be displayed right now")
