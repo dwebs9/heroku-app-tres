@@ -12,23 +12,32 @@ from . import db
 bp = Blueprint('tool', __name__, url_prefix='/tools')
 
 
-# create a page that will show the details of the tools
+# route to a page that will show the details of the tools
 @bp.route('/<id>', methods=["POST", "GET"])
 def show(id):
+    # initialise bidding form
     bform = BidForm()
 
+    # get current logged in user's id
     user_obj = session.get('user_id')
 
+    # query the db via the id number in the url
     tool = Tool.query.filter_by(id=id).first()
 
-    print(tool)
-    list_price = tool.list_price
+    # check that the product exists in the DB
+    if tool == None:
+        return redirect('../not_found')
 
-    # format list price for whole numbers and decimals
-    if list_price.is_integer():
-        list_price = '${:.0f}'.format(list_price)
-    else:
-        list_price = '${:,.2f}'.format(tool.list_price)
+    # save this item as viewed in the session
+    vieweditems = session.get('vieweditems')
+    print("sessiong.get: line passed")
+    if id not in vieweditems:
+        vieweditems.append(id)
+        print("if id not in vieweditems: line passed")
+    session['vieweditems'] = vieweditems
+
+    # get the list price to compare when a user makes a bid
+    list_price = tool.list_price
 
     bid_user = Bid.query.filter_by(user_id=user_obj, tool_id=id).first()
     current_bid_amount = ""
@@ -38,7 +47,6 @@ def show(id):
         current_bid_amount = bid_user.bid_amount
 
     return render_template('tools/item.html', tool=tool, list_price=list_price, form=bform, bid_user=bid_user, current_bid_amount=current_bid_amount)
-
 
 @bp.route('/userdash/<userid>', methods=["POST", "GET"])
 @login_required
