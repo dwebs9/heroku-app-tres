@@ -17,7 +17,8 @@ bp = Blueprint('tool', __name__, url_prefix='/tools')
 def show(id):
     # initialise bidding form
     bform = BidForm()
-
+    
+    #some change
     # get current logged in user's id
     user_obj = session.get('user_id')
 
