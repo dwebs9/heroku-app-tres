@@ -43,6 +43,9 @@ def create_app():
     
     app.secret_key = "the80sselfhelpguru"
 
+    from . import userdash
+    app.register_blueprint(userdash.bp)
+
 
     @app.errorhandler(404)
     def not_found(e):

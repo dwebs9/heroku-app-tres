@@ -1,0 +1,157 @@
+{% extends "userdash/basedash.html" %} {% import "bootstrap/wtf.html" as wtf %} {% block content %}
+
+<!------------------------------------------------------------------------------------------------------>
+<!--------------------------------------Start Dashboard Nav--------------------------------------------->
+<!------------------------------------------------------------------------------------------------------>
+
+<div class="row" style="background: lightgrey ">
+    <nav class="navbar col-12 navbar-expand-sm bg-base-blue text-white pt-3">
+        <div class="container-fluid">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">
+                        <i class="fas fa-home"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{'/userdash/userselling/{}'.format(current_user.id)}}">
+                        <i class="fas fa-sign"></i> Selling</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{'/userdash/usersold/{}'.format(current_user.id)}}">
+                        <i class="fas fa-hand-holding-usd"></i> Sold</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{'/userdash/userbids/{}'.format(current_user.id)}}">
+                        <i class="fas fa-money-bill-wave"></i> Your Bids</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+</section>
+<!------------------------------------------------------------------------------------------------------>
+<!--------------------------------------End Dashboard Nav----------------------------------------------->
+<!------------------------------------------------------------------------------------------------------>
+<main>
+    <!---Contains Main Content-->
+
+    <!--breadcrumb-start-->
+
+    <nav aria-label="breadcrumb">
+        <ol class="container-fluid ml-4 breadcrumb bg-white">
+            <li class="breadcrumb-item">
+                <a href="/">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="/userdash/maindash">Dashboard - {{current_user.name}}</a>
+            </li>
+        </ol>
+    </nav>
+
+    <!---Main Content-->
+    <div class="container-fluid px-0">
+        <section class="container-fluid text-center">
+            <!------------------------------------------------------------------------------------------------------>
+            <!------------------------------------Start Dashboard Cards--------------------------------------------->
+            <!------------------------------------------------------------------------------------------------------>
+            <div class="row py-0" style="background: lightgrey ">
+                <div class="card-deck-wrapper mx-auto">
+                    <div class="card-deck mx-auto px-4 py-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h1 style="font-size:5vw" class="card-text display-4">Bids Made </h1>
+                                <a href="{{'/userdash/userbids/{}'.format(current_user.id)}}" <h5 style="font-size:5vw" class="card-title display-2 text-decoration-none text-dark text-center">{{bid_length}}
+                                    </h5>
+                                </a>
+
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <h1 style="font-size:5vw" class="card-text display-4">Tools Listed </h1>
+                                <a href="{{'/userdash/userselling/{}'.format(current_user.id)}}" <h5 style="font-size:5vw" class="card-title display-2 text-decoration-none text-dark text-center">{{tool_length}}
+                                    </h5>
+                                </a>
+
+
+                            </div>
+                        </div>
+
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h1 style="font-size:5vw" class="card-text display-4">Tools Sold </h1>
+                                <a href="{{'/userdash/userselling/{}'.format(current_user.id)}}" <h5 style="font-size:5vw" class="card-title
+                                    display-2 text-decoration-none text-dark text-center">{{sold_length}}
+                                    </h5>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h1 style="font-size:5vw" class="card-text display-3">Total Sales</h1>
+                                <a href="{{'/userdash/userselling/{}'.format(current_user.id)}}" <h5 style="font-size:5vw" class="card-title
+                                        display-2 text-decoration-none text-dark text-center">${{total}}
+                                    </h5>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <!---End Card row-->
+
+            <!--Start Recently Viewed-->
+            {% if views == [] %} {% else %}
+            <section>
+
+                <div class="text-dark py-4">
+                    <h3 class="col-sm-12 ">Recently Viewed Items</h3>
+                </div>
+                <div class="container">
+                    <div class="card-deck mx-auto my-4">
+                        {% for view in views %}
+
+                        <div class="card border-dark mx-auto" style="max-width: 200px">
+                            <div class="card-header bg-base-blue text-white border-dark">
+                                <h5 class="card-title">{{view.brand}} {{view.tool_name}}</h5>
+                            </div>
+
+                            <div class="card-body py-0 px-0">
+                                <img style="height: 200px" class="card-img-top mx-auto" src={{ '/static/img/' + view.images }} alt="Tool Image">
+
+                                <p class="card-text mx-2 px-2 text-center text-truncate pt-3" style="max-width: 200px;">
+                                    {{view.desc}}
+                                </p>
+
+                            </div>
+                            <div class="text-center text-inline">
+
+                                <div class="card-footer bg-base-blue text-white border-dark">
+                                    <h5> Starting Price </h5>
+
+                                    <h5 class="font-face"> ${{view.list_price}}</h5>
+                                    <hr>
+                                    <a href="{{'/tools/{}'.format(view.id) }}" class="btn btn-bg-dp mx-auto btn-inline">Make a Bid
+                                    </a>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        {% endfor %}
+
+
+                    </div>
+                </div>
+            </section>
+            {% endif %}
+
+</main>
+
+</div>
+{% endblock %}
