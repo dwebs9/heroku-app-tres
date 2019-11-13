@@ -57,7 +57,7 @@ def userselling(userid):
 def usersold(userid):
 
     sold = Tool.query.filter_by(user_id=userid).filter(Tool.sold_status != "0").all()
-    print(type(sold[0]))
+    print(len(sold))
     return render_template('userdash/managesold.html', userid=userid, sold=sold)
 
 # Items user has bid on
