@@ -169,21 +169,21 @@ def create():
     form = CreateForm()
     heading = "List an Item"
     if form.validate_on_submit():
-        print("Form validated")
-        db_file_path = check_upload_file(form)
+        db_file_path = check_file(form)
+
         new_tool = Tool(
-            images=db_file_path,
             tool_name=form.tool_name.data,
-            modelNo=form.modelNo.data,
             list_price=form.list_price.data,
             category=form.category.data,
-            user_id=1,
+            images=db_file_path,
+            user_id=session.get("user_id"),
             desc=form.desc.data,
             brand=form.brand.data,
         )
         db.session.add(new_tool)
 
         db.session.commit()
+        flash(u"Your tool has been successfully listed!", "alert alert-info")
         return redirect(url_for("tool.create"))
 
     return render_template("tools/create.html", form=form, heading=heading)
