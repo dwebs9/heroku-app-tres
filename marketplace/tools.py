@@ -77,22 +77,6 @@ def userdash(userid):
     return render_template("tools/userdash.html", userid=userid, tool=tool, bids=bids)
 
 
-def check_upload_file(form):
-    # get file data from form
-    fp = form.images.data
-    filename = fp.filename
-    # get the current path of the module file… store file relative to this path
-    BASE_PATH = os.path.dirname(__file__)
-    # upload file location – directory of this file/static/image
-    upload_path = os.path.join(BASE_PATH, "static/img", secure_filename(filename))
-    # store relative path in DB as image location in HTML is relative
-    db_upload_path = "/static/img/" + secure_filename(filename)
-    # save the file and return the db upload path
-    fp.save(upload_path)
-
-    return db_upload_path
-
-
 @bp.route("/<id>/manage", methods=["POST", "GET"])
 @login_required
 def manage(id):
@@ -255,3 +239,18 @@ def bid(toolid):
     # redirect to the item page
     return redirect(url_for("tool.show", id=tool_id))
 
+
+def check_file(form):
+    fp = form.images.data
+
+    # retrieve the file
+    filename = fp.filename
+    print(fp.filename)
+    # Current OS path of the file
+    BASE_PATH = os.path.dirname(__file__)
+
+    upload_path = os.path.join(BASE_PATH, "static/img", secure_filename(filename))
+    db_upload_path = secure_filename(filename)
+    fp.save(upload_path)
+
+    return db_upload_path
