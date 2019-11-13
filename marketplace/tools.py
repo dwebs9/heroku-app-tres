@@ -1,6 +1,5 @@
 import datetime
-from flask import (Blueprint, flash, render_template, session,
-                   request, url_for, redirect)
+from flask import Blueprint, flash, render_template, session, request, url_for, redirect
 from .models import Tool, Bid, User
 from .forms import BidForm, MarkSold, UndoSold, CreateForm
 from flask_login import login_user, login_required, logout_user
@@ -9,33 +8,33 @@ from decimal import Decimal, getcontext
 import os
 from . import db
 
-bp = Blueprint('tool', __name__, url_prefix='/tools')
+bp = Blueprint("tool", __name__, url_prefix="/tools")
 
 
 # route to a page that will show the details of the tools
-@bp.route('/<id>', methods=["POST", "GET"])
+@bp.route("/<id>", methods=["POST", "GET"])
 def show(id):
     # initialise bidding form
     bform = BidForm()
-    
-    #some change
+
+    # some change
     # get current logged in user's id
-    user_obj = session.get('user_id')
+    user_obj = session.get("user_id")
 
     # query the db via the id number in the url
     tool = Tool.query.filter_by(id=id).first()
 
     # check that the product exists in the DB
     if tool == None:
-        return redirect('../not_found')
+        return redirect("../not_found")
 
     # save this item as viewed in the session
-    vieweditems = session.get('vieweditems')
+    vieweditems = session.get("vieweditems")
     print("sessiong.get: line passed")
     if id not in vieweditems:
         vieweditems.append(id)
         print("if id not in vieweditems: line passed")
-    session['vieweditems'] = vieweditems
+    session["vieweditems"] = vieweditems
 
     # get the list price to compare when a user makes a bid
     list_price = tool.list_price
@@ -47,9 +46,17 @@ def show(id):
     if bid_user is not None:
         current_bid_amount = bid_user.bid_amount
 
-    return render_template('tools/item.html', tool=tool, list_price=list_price, form=bform, bid_user=bid_user, current_bid_amount=current_bid_amount)
+    return render_template(
+        "tools/item.html",
+        tool=tool,
+        list_price=list_price,
+        form=bform,
+        bid_user=bid_user,
+        current_bid_amount=current_bid_amount,
+    )
 
-@bp.route('/userdash/<userid>', methods=["POST", "GET"])
+
+@bp.route("/userdash/<userid>", methods=["POST", "GET"])
 @login_required
 def userdash(userid):
     print("Userdash should be displayed right now")
@@ -59,17 +66,15 @@ def userdash(userid):
     print(tool)
 
     # query db for bids current user has made
-    bids = db.session.query(Tool, Bid).join(
-        Bid).filter_by(user_id=userid).all()
+    bids = db.session.query(Tool, Bid).join(Bid).filter_by(user_id=userid).all()
     print(bids)
-    current_user = session.get('user_id')
+    current_user = session.get("user_id")
 
     # if the url userid does not match the logged in user - log them out
     # if current_user != userid:
     #     return redirect(url_for('auth.logout'))
 
-    return render_template('tools/userdash.html', userid=userid, tool=tool, bids=bids)
-
+    return render_template("tools/userdash.html", userid=userid, tool=tool, bids=bids)
 
 
 def check_upload_file(form):
@@ -87,14 +92,15 @@ def check_upload_file(form):
 
     return db_upload_path
 
-@bp.route('/<id>/manage', methods=["POST", "GET"])
+
+@bp.route("/<id>/manage", methods=["POST", "GET"])
 @login_required
 def manage(id):
     soldForm = MarkSold(request.form)
     undoForm = UndoSold(request.form)
 
     # get the user id from the current session
-    userid = session.get('user_id')
+    userid = session.get("user_id")
 
     # get the current tool details passed through the url
     tool = Tool.query.filter_by(id=id).first()
@@ -111,9 +117,8 @@ def manage(id):
     if sold_user == "":
         heading = "Current Bids"
         print(heading)
-        bid_user = db.session.query(User, Bid).join(
-            Bid).filter_by(tool_id=id).all()
-        print('Current Bids')
+        bid_user = db.session.query(User, Bid).join(Bid).filter_by(tool_id=id).all()
+        print("Current Bids")
         print(bid_user)
 
     # If a user has been marked as sold, show the details of that user and bid
@@ -121,8 +126,13 @@ def manage(id):
         heading = "Bid sold to:"
         print(heading)
         # join the user and bid table
-        bid_user = db.session.query(User, Bid).filter(
-            Bid.user_id == User.id).filter(Bid.tool_id == Tool.id).filter(Tool.sold_status == Bid.id).all()
+        bid_user = (
+            db.session.query(User, Bid)
+            .filter(Bid.user_id == User.id)
+            .filter(Bid.tool_id == Tool.id)
+            .filter(Tool.sold_status == Bid.id)
+            .all()
+        )
 
         print(bid_user)
 
@@ -136,12 +146,20 @@ def manage(id):
         update_tool = Tool.query.get(id)
         update_tool.sold_status = bid_userid
         db.session.commit()
-        print('COMMITED TO DB')
+        print("COMMITED TO DB")
 
         # redirect back to the manage page with refreshed list
-        return redirect(url_for('tool.manage', id=id))
+        return redirect(url_for("tool.manage", id=id))
 
-    return render_template('tools/manage.html', soldForm=soldForm, userid=userid, tool=tool, heading=heading, undoForm=undoForm, bid_user=bid_user)
+    return render_template(
+        "tools/manage.html",
+        soldForm=soldForm,
+        userid=userid,
+        tool=tool,
+        heading=heading,
+        undoForm=undoForm,
+        bid_user=bid_user,
+    )
 
     # db_file_path = check_file(form)
 
@@ -170,7 +188,8 @@ def create():
 
     return render_template("tools/create.html", form=form, heading=heading)
 
-@bp.route('/<toolid>/bid', methods=['GET', 'POST'])
+
+@bp.route("/<toolid>/bid", methods=["GET", "POST"])
 def bid(toolid):
     form = BidForm()
     tool = Tool.query.filter_by(id=toolid).first()
@@ -178,29 +197,31 @@ def bid(toolid):
     tool_id = tool.id
     tool_list_price = float(tool.list_price)
     print(tool_list_price)
-    user_obj = session.get('user_id')
+    user_obj = session.get("user_id")
     # check if a bid exists for this user
     bid_user = Bid.query.filter_by(user_id=user_obj, tool_id=toolid).first()
 
     if bid_user is None:
         # get the tool object associated with the page
         if form.validate_on_submit():
-            bid = Bid(bid_amount=form.bidamount.data,
-                      tool_id=toolid, user_id=user_obj)
+            bid = Bid(bid_amount=form.bidamount.data, tool_id=toolid, user_id=user_obj)
             bid_float = float(bid.bid_amount)
             if bid_float < tool_list_price:
-                flash('Bid amount needs to be higher than the list price',
-                      'alert alert-danger')
-                print('Bid amount needs to be higher than the list price',
-                      'alert alert-danger')
-                return redirect(url_for('tool.show', id=tool_id))
+                flash(
+                    "Bid amount needs to be higher than the list price",
+                    "alert alert-danger",
+                )
+                print(
+                    "Bid amount needs to be higher than the list price",
+                    "alert alert-danger",
+                )
+                return redirect(url_for("tool.show", id=tool_id))
 
             # add and commit to bid db
             db.session.add(bid)
             db.session.commit()
-            print(u'Your bid has been added', 'success')
-            flash(u'Bid successfully sent to seller for review',
-                  'alert alert-success')
+            print(u"Your bid has been added", "success")
+            flash(u"Bid successfully sent to seller for review", "alert alert-success")
 
     else:
         if form.validate_on_submit():
@@ -209,21 +230,28 @@ def bid(toolid):
             print(bid)
             bid_float = float(bid)
             if bid_float < tool_list_price:
-                flash(u'Bid amount needs to be higher than the list price',
-                      'alert alert-danger')
-                print(u'Bid amount needs to be higher than the list price',
-                      'alert alert-danger')
-                return redirect(url_for('tool.show', id=tool_id))
+                flash(
+                    u"Bid amount needs to be higher than the list price",
+                    "alert alert-danger",
+                )
+                print(
+                    u"Bid amount needs to be higher than the list price",
+                    "alert alert-danger",
+                )
+                return redirect(url_for("tool.show", id=tool_id))
 
             # retrieve current bid
+            # arbitrary comment
             current_bid = Bid.query.get(bid_id)
             print(current_bid)
             current_bid.bid_amount = bid
 
             db.session.commit()
-            print(u'Your bid has been updated', 'alert alert-success')
+            print(u"Your bid has been updated", "alert alert-success")
             flash(
-                u'Success, Your updated bid has been sent to the seller for review', 'alert alert-success')
+                u"Success, Your updated bid has been sent to the seller for review",
+                "alert alert-success",
+            )
     # redirect to the item page
-    return redirect(url_for('tool.show', id=tool_id))
+    return redirect(url_for("tool.show", id=tool_id))
 
