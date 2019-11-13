@@ -47,7 +47,7 @@ def maindash(userid):
 def userselling(userid):
 
     # query db for tools current user has listed
-    tool = Tool.query.filter_by(user_id=userid).filter(Tool.sold_status == 0).all()
+    tool = Tool.query.filter_by(user_id=userid).filter(Tool.sold_status == "0").all()
 
     return render_template('userdash/manageselling.html', userid=userid, tool=tool)
 
@@ -56,7 +56,7 @@ def userselling(userid):
 @login_required
 def usersold(userid):
 
-    sold = Tool.query.filter_by(user_id=userid).filter(Tool.sold_status != 0).all()
+    sold = Tool.query.filter_by(user_id=userid).filter(Tool.sold_status != "0").all()
 
     return render_template('userdash/managesold.html', userid=userid, sold=sold)
 
