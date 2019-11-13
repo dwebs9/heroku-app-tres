@@ -22,6 +22,7 @@ def maindash(userid):
     tool_length = len(tool)
     print("#####The tool length is")
     print(tool_length)
+    print(userid)
     # tool_length = session.get('tool_length', None)
 
     # count bids made by user
