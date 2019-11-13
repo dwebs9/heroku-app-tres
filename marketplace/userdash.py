@@ -20,6 +20,8 @@ def maindash(userid):
     # count tools selling
     tool = Tool.query.filter_by(user_id=userid).filter(Tool.sold_status == "0").all()
     tool_length = len(tool)
+    print("#####The tool length is")
+    print(tool_length)
     # tool_length = session.get('tool_length', None)
 
     # count bids made by user
@@ -57,7 +59,7 @@ def userselling(userid):
 def usersold(userid):
 
     sold = Tool.query.filter_by(user_id=userid).filter(Tool.sold_status != "0").all()
-    print(len(sold))
+    
     return render_template('userdash/managesold.html', userid=userid, sold=sold)
 
 # Items user has bid on
