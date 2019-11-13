@@ -18,15 +18,27 @@ from . import db
 
 bp = Blueprint("app", __name__)
 
-@bp.route('/', methods=["GET", "POST"])
+
+@bp.route("/", methods=["GET", "POST"])
 def index():
+
+    # Query for recently listed items card deck
+    tools = Tool.query.order_by(desc(Tool.date_created)).limit(4).all()
+
+    # Initialise search form on landing page
     form_land = LandingForm()
+    search_results = []
+    search = SearchForm()
     if request.args.get("landing_search") != None:
-        print("Form has validated")
+        search_string = request.args.get("landing_search")
+        print(search_string)
+        all_tools = Tool.query.all()
+        for tool in all_tools:
+            if re.search(search_string, tool.tool_name, re.IGNORECASE):
+                search_results.append(tool)
+        return render_template("results.html", form=search, items=search_results)
 
-
-    return render_template("index.html", form=form_land)
-
+    return render_template("index.html", form=form_land, tools=tools)
 
 
 @bp.route("/results", methods=["GET", "POST"])
