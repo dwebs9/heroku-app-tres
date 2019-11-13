@@ -6,18 +6,20 @@
 
     <h1 class="bg-base-blue col-4 text-white">Find The Perfect Tool</h1>
     <div class="container">
-        <form class="inline-form col-sm-10">
+        <form>
             <div class="input-group-lg col-sm-10">
-                {{wtf.form_field(form.landing_search, placeholder="I'm looking for...", type="text", class="form-control")}}
+                <div class="aaa">
+                    {{wtf.form_field(form.landing_search, placeholder="I'm looking for...", type="text", class="form-control btn-success-mog")}}
+                </div>
+
+                <div class="bbb">
+                    {{wtf.form_field(form.landing_search_button, class="form-control btn btn-success btn-success-mod", )}}
+                </div>
+
             </div>
-            <div class="input-group-append">
-                {{wtf.form_field(form.landing_search_button, class="form-control btn btn-success", )}}
-            </div>
-
-    </div>
 
 
-    </form>
+        </form>
     </div>
 </section>
 <!-- Jumbotron Search ./ End -->
@@ -26,7 +28,7 @@
 
     <!---Contains Main Content-->
 
-    <!---Popular Items-->
+    <!---Popular Items--->
 
     <section>
 
@@ -34,38 +36,40 @@
             <h3 class="col-sm-12 ">Recently Listed Items</h3>
         </div>
         <div class="container">
-            <div class="card-deck my-4">
+            <div class="card-deck-wrapper">
+                <div class="card-deck my-4 rounded-0">
+                    {% for tool in tools %}
 
+                    <div class="card border-dark mx-auto" style="max-width: 250px">
+                        <div class="card-header bg-base-blue text-white border-dark">
+                            <h5 class="card-title">{{tool.brand}} {{tool.tool_name}}</h5>
+                        </div>
 
-                <div class="card border-dark">
-                    <div class="card-header bg-base-blue text-white border-dark">
-                        <h5 class="card-title"></h5>
-                    </div>
+                        <div class="card-body py-0 px-0">
+                            <img class="img thumb-post card-img-top mx-auto" src={{ '../static/img/' + tool.images }} alt="Tool Image">
 
-                    <div class="card-body">
-                        <img class="card-img-top mx-auto" src='' alt="Tool Image">
-
-                        <p class="card-text d-inline-block text-truncate pt-3" style="max-width: 200px;">
-                        </p>
-
-                    </div>
-                    <div class="text-center text-inline">
-
-                        <div class="card-footer bg-base-blue text-white border-dark">
-                            <h5> Starting Price </h5>
-
-                            <h5 class="font-face"></h5>
-                            <hr>
-                            <a href="" class="btn btn-bg-dp mx-auto btn-inline">Make a Bid
-                            </a>
+                            <p class="card-text mx-2 px-2 text-center pt-3">{{tool.desc}}
+                            </p>
 
                         </div>
+                        <div class="text-center text-inline">
+
+                            <div class="card-footer bg-base-blue text-white border-dark">
+                                <h5> Starting Price </h5>
+
+                                <h5 class="font-face"> ${{tool.list_price}}</h5>
+                                <hr>
+                                <a href="{{'/tools/{}'.format(tool.id) }}" class="btn btn-bg-dp mx-auto btn-inline">Make a Bid
+                                </a>
+
+                            </div>
+                        </div>
+
                     </div>
+                    {% endfor %}
+
 
                 </div>
-
-
-
             </div>
         </div>
     </section>
@@ -77,7 +81,7 @@
 
             <article class="col-sm-6 " id="browse ">
 
-                <img class="mx-auto mt-3 " src=" " alt="Browse Tools to Buy " height="200px " />
+                <img class="mx-auto mt-3 " src="static\img\toolhand.png " alt="Browse Tools to Buy " height="200px " />
 
                 <h3 class="display-4 ">Find A Tool</h3>
 
@@ -86,13 +90,13 @@
 
                 <button class="btn btn-success mb-3 ">Browse Categories</button>
 
-                <a href=""></a>
+                <a href="item.html "></a>
 
             </article>
 
             <article class="col-sm-6 " id="sell ">
 
-                <img class="mx-auto mt-3 " src="" alt="Sell a Tool " height="200px " />
+                <img class="mx-auto mt-3 " src="static\img\shed.png " alt="Sell a Tool " height="200px " />
 
 
                 <h3 class="display-4 "> Sell a Tool</h3>
@@ -100,7 +104,11 @@
                 <p> Are your tools just collecting dust in your garage? Need to make a few bucks? Well its time to pull them
                     out, dust them off and list them here</p>
 
-                <button class="btn btn-success ">Sell Your Tools Here</button>
+                <a href="/tools/create">
+                    <button type="button" onclick="login" class=" btn btn-success mt-4">Sell your tools here
+                    </button>
+                </a>
+
 
             </article>
 
