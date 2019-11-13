@@ -43,7 +43,7 @@ def index():
 
 @bp.route("/results", methods=["GET", "POST"])
 def search():
-
+    # arbitrary comment
     search = SearchForm()
     search_results = []
     print("########## attempt to submit form")
