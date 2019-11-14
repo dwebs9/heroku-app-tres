@@ -149,6 +149,7 @@ def manage(id):
 
 
 @bp.route("/create", methods=["GET", "POST"])
+@login_required
 def create():
     form = CreateForm()
     heading = "List an Item"
