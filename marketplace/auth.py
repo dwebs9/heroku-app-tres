@@ -1,5 +1,12 @@
 from flask import (
-    Blueprint, flash, render_template, request, url_for, redirect, Markup, session
+    Blueprint,
+    flash,
+    render_template,
+    request,
+    url_for,
+    redirect,
+    Markup,
+    session,
 )
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.urls import url_parse
@@ -10,57 +17,57 @@ from . import db
 
 
 # create a blueprint
-bp = Blueprint('auth', __name__)
+bp = Blueprint("auth", __name__)
 
 
-@bp.route('/login', methods=['GET', 'POST'])
+@bp.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm()
 
-    if(form.validate_on_submit()):
+    if form.validate_on_submit():
         emailid = form.emailid.data
         password = form.password.data
         u1 = User.query.filter_by(emailid=emailid).first()
 
-        next_page = request.args.get('next')
-        print('#################')
+        next_page = request.args.get("next")
+        print("#################")
 
         print(next_page)
-        print('#################')
+        print("#################")
 
         # if there is no user with matching username or password is incorrect
         if u1 is None or not check_password_hash(u1.password_hash, password):
-            flash(u'Incorrect Login Credentials', 'alert alert-danger')
-            return redirect(url_for('auth.login'))
+            flash(u"Incorrect Login Credentials", "alert alert-danger")
+            return redirect(url_for("auth.login"))
         login_user(u1)
         viewed = []
-        session['vieweditems'] = viewed
-        if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('app.index')
-            print('#################')
+        session["vieweditems"] = viewed
+        if not next_page or url_parse(next_page).netloc != "":
+            next_page = url_for("app.index")
+            print("#################")
 
         print(next_page)
-        print('#################')
+        print("#################")
 
         return redirect(next_page)
-    return render_template('user.html', form=form, heading='Login')
+    return render_template("user.html", form=form, heading="Login")
 
 
-@bp.route('/logout')
+@bp.route("/logout")
 def logout():
-   
+
     logout_user()
     # flash("You have been succesfully logged out", 'alert alert-info')
 
-    return redirect(url_for('app.index'))
+    return redirect(url_for("app.index"))
 
 
-@bp.route('/register', methods=['GET', 'POST'])
+@bp.route("/register", methods=["GET", "POST"])
 def register():
     form = RegisterForm()
     register_error = None
     if form.validate_on_submit():
-        print('Registration form Submitted')
+        print("Registration form Submitted")
         # retrieve Username, Pwd & Email
         name = form.name.data
         lastName = form.lastName.data
@@ -72,23 +79,25 @@ def register():
         user_exists = User.query.filter_by(emailid=email).first()
 
         if user_exists:
-            register_error = "The Email \"{}\" is already registered, please try another email or <a href=\"/login\" class=\"alert-link\">Login here</a>" .format(
-                email)
-            ((Markup(register_error)), 'alert alert-danger')
-            return redirect(url_for('auth.register'))
+            print("THIS USER DOES EXISTU")
+            register_error = 'The Email "{}" is already registered, please try another email or <a href="/login" class="alert-link">Login here</a>'.format(
+                email
+            )
+            ((Markup(register_error)), "alert alert-danger")
+            return redirect(url_for("auth.register"))
 
         # create a new db user
 
-        new_user = User(name=name, lastName=lastName,
-                        password_hash=pwd_hash, emailid=email)
+        new_user = User(
+            name=name, lastName=lastName, password_hash=pwd_hash, emailid=email
+        )
         db.session.add(new_user)
         db.session.commit()
-        print('COMMITED TO DB')
-        register_success = "The Email \"{}\"successfully registered" .format(
-            email)
-        flash((Markup(register_success)), 'alert alert-info')
+        print("COMMITED TO DB")
+        register_success = 'The Email "{}"successfully registered'.format(email)
+        flash((Markup(register_success)), "alert alert-info")
         # redirect
 
-        return redirect(url_for('auth.login'))
+        return redirect(url_for("auth.login"))
 
-    return render_template('user.html', form=form, heading='Register')
+    return render_template("user.html", form=form, heading="Register")
