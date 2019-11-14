@@ -83,7 +83,8 @@ def register():
             register_error = 'The Email "{}" is already registered, please try another email or <a href="/login" class="alert-link">Login here</a>'.format(
                 email
             )
-            ((Markup(register_error)), "alert alert-danger")
+            flash((Markup(register_error)), "alert alert-danger")
+
             return redirect(url_for("auth.register"))
 
         # create a new db user
