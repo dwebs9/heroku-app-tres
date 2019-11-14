@@ -175,28 +175,33 @@ def create():
 
 @bp.route("/<toolid>/bid", methods=["GET", "POST"])
 def bid(toolid):
+
+    # initialise bid form
     form = BidForm()
     tool = Tool.query.filter_by(id=toolid).first()
-    print(tool)
     tool_id = tool.id
     tool_list_price = float(tool.list_price)
-    print(tool_list_price)
     user_obj = session.get("user_id")
     # check if a bid exists for this user
     bid_user = Bid.query.filter_by(user_id=user_obj, tool_id=toolid).first()
 
+    # check the bidder isn't also the seller
+    tool_user_id = tool.user_id
+    int_userobj = int(user_obj)
     if bid_user is None:
         # get the tool object associated with the page
         if form.validate_on_submit():
             bid = Bid(bid_amount=form.bidamount.data, tool_id=toolid, user_id=user_obj)
             bid_float = float(bid.bid_amount)
-            if bid_float < tool_list_price:
+            if bid_float <= tool_list_price:
                 flash(
                     "Bid amount needs to be higher than the list price",
                     "alert alert-danger",
                 )
-                print(
-                    "Bid amount needs to be higher than the list price",
+                return redirect(url_for("tool.show", id=tool_id))
+            if tool_user_id == int_userobj:
+                flash(
+                    "It's like calling your own phone, bidding on your own tool doesn't work.",
                     "alert alert-danger",
                 )
                 return redirect(url_for("tool.show", id=tool_id))
@@ -208,30 +213,29 @@ def bid(toolid):
             flash(u"Bid successfully sent to seller for review", "alert alert-success")
 
     else:
+        # update bid
         if form.validate_on_submit():
             bid_id = bid_user.id
             bid = form.bidamount.data
-            print(bid)
             bid_float = float(bid)
-            if bid_float < tool_list_price:
+            if bid_float <= tool_list_price:
                 flash(
                     u"Bid amount needs to be higher than the list price",
                     "alert alert-danger",
                 )
-                print(
-                    u"Bid amount needs to be higher than the list price",
+                return redirect(url_for("tool.show", id=tool_id))
+            if tool_user_id == int_userobj:
+                flash(
+                    "It's like calling your own phone, bidding on your own tool doesn't work",
                     "alert alert-danger",
                 )
                 return redirect(url_for("tool.show", id=tool_id))
 
             # retrieve current bid
-            # arbitrary comment
             current_bid = Bid.query.get(bid_id)
-            print(current_bid)
             current_bid.bid_amount = bid
 
             db.session.commit()
-            print(u"Your bid has been updated", "alert alert-success")
             flash(
                 u"Success, Your updated bid has been sent to the seller for review",
                 "alert alert-success",
