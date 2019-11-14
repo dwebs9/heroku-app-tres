@@ -175,7 +175,7 @@ def create():
 
 @bp.route("/<toolid>/bid", methods=["GET", "POST"])
 def bid(toolid):
-
+    # arbitrary comment
     # initialise bid form
     form = BidForm()
     tool = Tool.query.filter_by(id=toolid).first()
